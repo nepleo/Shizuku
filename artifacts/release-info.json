@@ -1,0 +1,16 @@
+{
+  "apk": "Shizuku-recovery.3-clean-notifications-release.apk",
+  "version": "13.6.0.r1091.b844bc49.recovery.3",
+  "versionCode": 1094,
+  "bytes": 2725217,
+  "sha256": "9dd4e699d6c50e5ddb1d0312b60bc7ee01c0e58d5d26c6013f48451fc433148f",
+  "signerCertificateSha256": "c29a7805c9e800fd3350ddbcadbf8886bd6655be334f0817da540fa94ff44d6c",
+  "tests": 5,
+  "newLintErrors": 0,
+  "notificationChannels": [
+    "adb_pairing",
+    "shizuku_watchdog_status",
+    "shizuku_recovery_alerts"
+  ],
+  "removedLegacyChannel": "shizuku_recovery"
+}

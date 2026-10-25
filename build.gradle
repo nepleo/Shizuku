@@ -25,10 +25,9 @@ subprojects {
 }
 
 apply from: 'api/manifest.gradle'
-def gitCommitId = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
-def gitCommitCount = Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
 def baseVersionName = "${api_version_major}.6.0"
 ext {
-    versionCode = gitCommitCount
-    versionName = "${baseVersionName}.r${gitCommitCount}.${gitCommitId}"
+    // Pin this release so committing its source does not change the APK version.
+    versionCode = 1094
+    versionName = "${baseVersionName}.r1091.b844bc49.recovery.3"
 }

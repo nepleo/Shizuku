@@ -1,4 +1,7 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string tools:ignore="MissingTranslation" name="settings_hide_task">Hide task</string>
+    <string tools:ignore="MissingTranslation" name="settings_hide_task_summary">Hide the Shizuku card from recent tasks. Reopen it from the launcher. This does not change the running service.</string>
+    <string tools:ignore="MissingTranslation" name="settings_hide_task_failed">Could not change recent task visibility.</string>
     <string name="app_name" translatable="false">Shizuku</string>
 
     <!-- To translators: you can leave your here -->

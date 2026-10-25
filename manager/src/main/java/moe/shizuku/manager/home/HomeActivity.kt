@@ -18,6 +18,8 @@ import moe.shizuku.manager.databinding.HomeActivityBinding
 import moe.shizuku.manager.ktx.toHtml
 import moe.shizuku.manager.management.appsViewModel
 import moe.shizuku.manager.settings.SettingsActivity
+import moe.shizuku.manager.settings.TaskVisibility
+import moe.shizuku.manager.recovery.RecoveryController
 import moe.shizuku.manager.utils.AppIconCache
 import rikka.core.ktx.unsafeLazy
 import rikka.lifecycle.Status
@@ -73,6 +75,8 @@ abstract class HomeActivity : AppBarActivity() {
 
     override fun onResume() {
         super.onResume()
+        TaskVisibility.apply(this)
+        RecoveryController.startWatchdog(this)
         checkServerStatus()
     }
 
@@ -122,6 +126,7 @@ abstract class HomeActivity : AppBarActivity() {
                     .setMessage(R.string.dialog_stop_message)
                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                         try {
+                            RecoveryController.pause(this)
                             Shizuku.exit()
                         } catch (e: Throwable) {
                         }

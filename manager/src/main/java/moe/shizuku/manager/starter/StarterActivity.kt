@@ -1,5 +1,8 @@
 package moe.shizuku.manager.starter
 
+import moe.shizuku.manager.recovery.RecoveryController
+import moe.shizuku.manager.recovery.RecoveryAdbStarter
+
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -42,6 +45,7 @@ class StarterActivity : AppBarActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        RecoveryController.setPaused(false)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close_24)
@@ -178,13 +182,21 @@ private class ViewModel(context: Context, root: Boolean, host: String?, port: In
                 return@launch
             }
 
-            AdbClient(host, port, key).runCatching {
-                connect()
-                shellCommand(Starter.internalCommand) {
-                    sb.append(String(it))
-                    postResult()
+            runCatching {
+                if (RecoveryController.tcpEnabled()) {
+                    RecoveryAdbStarter.start(host, port) {
+                        sb.append(String(it))
+                        postResult()
+                    }
+                } else {
+                    AdbClient(host, port, key).use {
+                        it.connect()
+                        it.shellCommand(Starter.internalCommand) { output ->
+                            sb.append(String(output))
+                            postResult()
+                        }
+                    }
                 }
-                close()
             }.onFailure {
                 it.printStackTrace()
 

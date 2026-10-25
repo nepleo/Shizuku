@@ -20,13 +20,15 @@ import java.io.Closeable
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.net.Socket
+import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import javax.net.ssl.SSLSocket
 
 private const val TAG = "AdbClient"
 
-class AdbClient(private val host: String, private val port: Int, private val key: AdbKey) : Closeable {
+class AdbClient(private val host: String, private val port: Int, private val key: AdbKey,
+                private val timeoutMs: Int = 0) : Closeable {
 
     private lateinit var socket: Socket
     private lateinit var plainInputStream: DataInputStream
@@ -42,7 +44,9 @@ class AdbClient(private val host: String, private val port: Int, private val key
     private val outputStream get() = if (useTls) tlsOutputStream else plainOutputStream
 
     fun connect() {
-        socket = Socket(host, port)
+        socket = Socket()
+        socket.connect(InetSocketAddress(host, port), timeoutMs)
+        socket.soTimeout = timeoutMs
         socket.tcpNoDelay = true
         plainInputStream = DataInputStream(socket.getInputStream())
         plainOutputStream = DataOutputStream(socket.getOutputStream())
@@ -81,8 +85,12 @@ class AdbClient(private val host: String, private val port: Int, private val key
     }
 
     fun shellCommand(command: String, listener: ((ByteArray) -> Unit)?) {
+        command("shell:$command", listener)
+    }
+
+    fun command(command: String, listener: ((ByteArray) -> Unit)? = null) {
         val localId = 1
-        write(A_OPEN, localId, 0, "shell:$command")
+        write(A_OPEN, localId, 0, command)
 
         var message = read()
         when (message.command) {

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recovery_watchdog_title">異常停止後自動恢復</string>
+    <string name="recovery_watchdog_summary">透過前景看門狗監測 Shizuku，意外停止後嘗試重啟。手動停止後暫停恢復，直到再次手動啟動；啟用開機啟動時，重新開機後也會恢復。</string>
+    <string name="recovery_tcp_title">TCP 模式（選用）</string>
+    <string name="recovery_tcp_summary">下次啟動時切換到 ADB TCP 連接埠 5555。每次重新開機後首次啟動需要 Wi-Fi，之後可無 Wi-Fi 恢復。保持 USB 偵錯開啟，只接受自己發起的偵錯授權。關閉此開關不會關閉現有 TCP 連接埠，可重新開機關閉。</string>
+    <string name="recovery_title">Shizuku 自動恢復</string>
+    <string name="recovery_watching">正在監測 Shizuku，意外停止後將嘗試恢復。</string>
+    <string name="recovery_wait_wifi">正在等待 Wi-Fi，無線啟動需要已授權的 Wi-Fi 網路。</string>
+    <string name="recovery_retry">Shizuku 暫不可用，正在退避重試；手機休眠可能延遲恢復。</string>
+    <string name="recovery_manual">自動恢復需要手動處理。請開啟 Shizuku，檢查偵錯權限、配對與網路後手動啟動；也可能是重試已達上限。</string>
+    <string name="recovery_status_channel">看門狗狀態（靜音）</string>
+    <string name="recovery_alert_channel">需要處理的提醒</string>
+    <string name="recovery_action_required">自動恢復需要手動處理，請開啟 Shizuku。</string>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="recovery_watchdog_title">Automatic recovery</string>
+    <string name="recovery_watchdog_summary">Keep a foreground watchdog and attempt to restart Shizuku after an unexpected exit. A manual stop pauses recovery until the next manual start, or reboot with start on boot enabled.</string>
+    <string name="recovery_tcp_title">TCP mode (optional)</string>
+    <string name="recovery_tcp_summary">Use ADB TCP port 5555 on the next start. Wi-Fi is needed once after each reboot; later recovery can work without Wi-Fi. Keep USB debugging enabled. Only accept debugging prompts you initiated. Disabling this switch does not close an existing TCP port; reboot to close it.</string>
+    <string name="recovery_title">Shizuku automatic recovery</string>
+    <string name="recovery_watching">Monitoring Shizuku. Unexpected exits will trigger a recovery attempt.</string>
+    <string name="recovery_wait_wifi">Waiting for Wi-Fi. Wireless startup requires an authorized Wi-Fi network.</string>
+    <string name="recovery_retry">Shizuku is unavailable. Retrying with backoff; sleep may delay recovery.</string>
+    <string name="recovery_manual">Automatic recovery needs your help. Open Shizuku, check debugging authorization and pairing, then start manually. Retries may also have reached their limit.</string>
+    <string name="recovery_status_channel">Watchdog status (silent)</string>
+    <string name="recovery_alert_channel">Action required</string>
+    <string name="recovery_action_required">Automatic recovery needs your attention. Open Shizuku.</string>
+</resources>

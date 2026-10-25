@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_hide_task">隱藏工作</string>
+    <string name="settings_hide_task_summary">隱藏最近使用應用程式中的 Shizuku 卡片，可透過桌面圖示重新開啟。不改變服務執行狀態。</string>
+    <string name="settings_hide_task_failed">無法變更最近使用應用程式的顯示狀態。</string>
     <string name="permission_label">使用 Shizuku</string>
     <string name="permission_description">允許應用程式使用 Shizuku。</string>
     <string name="home_status_service_is_running">%1$s 正在執行</string>

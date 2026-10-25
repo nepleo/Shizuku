@@ -9,6 +9,9 @@ import moe.shizuku.manager.ktx.logd
 import org.lsposed.hiddenapibypass.HiddenApiBypass
 import rikka.core.util.BuildUtils.atLeast30
 import rikka.material.app.LocaleDelegate
+import rikka.shizuku.Shizuku
+import moe.shizuku.manager.recovery.RecoveryController
+import moe.shizuku.manager.recovery.RecoveryNotifications
 
 lateinit var application: ShizukuApplication
 
@@ -39,6 +42,11 @@ class ShizukuApplication : Application() {
         super.onCreate()
         application = this
         init(this)
+        RecoveryNotifications.initialize(this)
+        Shizuku.addBinderReceivedListenerSticky {
+            RecoveryNotifications.clearAlert(this)
+            RecoveryController.startWatchdog(this)
+        }
     }
 
 }

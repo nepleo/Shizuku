@@ -1,3 +1,5 @@
+> 自定义版本、APK 下载与验证说明：[CUSTOM_RELEASE.md](CUSTOM_RELEASE.md)。
+
 # Shizuku
 
 ## Background

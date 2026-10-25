@@ -11,3 +11,12 @@
 /manager/signing.properties
 /out
 /signing.properties
+
+# Private signing material and generated Kotlin state
+*.jks
+*.keystore
+.kotlin/
+
+# Only signed release APKs in artifacts/ are versioned
+*.apk
+!/artifacts/*.apk

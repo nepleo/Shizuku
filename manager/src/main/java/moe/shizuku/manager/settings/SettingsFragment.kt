@@ -2,6 +2,9 @@ package moe.shizuku.manager.settings
 
 import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
@@ -9,6 +12,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.*
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +27,8 @@ import moe.shizuku.manager.ktx.setComponentEnabled
 import moe.shizuku.manager.ktx.toHtml
 import moe.shizuku.manager.receiver.BootCompleteReceiver
 import moe.shizuku.manager.utils.CustomTabsHelper
+import moe.shizuku.manager.recovery.RecoveryController
+import moe.shizuku.manager.recovery.WatchdogService
 import rikka.core.util.ResourceUtils
 import rikka.material.app.LocaleDelegate
 import rikka.recyclerview.addEdgeSpacing
@@ -61,6 +67,36 @@ class SettingsFragment : PreferenceFragmentCompat() {
         translationContributorsPreference = findPreference("translation_contributors")!!
         useSystemColorPreference = findPreference(KEY_USE_SYSTEM_COLOR)!!
 
+        findPreference<TwoStatePreference>(RecoveryController.WATCHDOG)!!
+            .onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, value ->
+                if (value !is Boolean) return@OnPreferenceChangeListener false
+                ShizukuSettings.getPreferences().edit().putBoolean(RecoveryController.WATCHDOG, value).apply()
+                if (value) {
+                    RecoveryController.setPaused(false)
+                    if (Build.VERSION.SDK_INT >= 33 && context.checkSelfPermission(
+                            Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1447)
+                    }
+                    RecoveryController.startWatchdog(context)
+                    RecoveryController.enqueue(context)
+                } else {
+                    context.stopService(Intent(context, WatchdogService::class.java))
+                    RecoveryController.cancel(context)
+                }
+                true
+            }
+
+        findPreference<TwoStatePreference>(TaskVisibility.KEY_HIDE_TASK)!!
+            .onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+                val currentActivity = activity
+                val applied = newValue is Boolean && currentActivity != null &&
+                    TaskVisibility.apply(currentActivity, newValue)
+                if (!applied) {
+                    Toast.makeText(context, R.string.settings_hide_task_failed, Toast.LENGTH_SHORT).show()
+                }
+                applied
+            }
+
         val componentName = ComponentName(context.packageName, BootCompleteReceiver::class.java.name)
 
         startOnBootPreference.isChecked = context.packageManager.isComponentEnabled(componentName)
@@ -68,6 +104,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 if (newValue is Boolean) {
                     context.packageManager.setComponentEnabled(componentName, newValue)
+                    if (newValue) {
+                        if (Build.VERSION.SDK_INT >= 33 && context.checkSelfPermission(
+                                Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1447)
+                        }
+                    } else if (!RecoveryController.watchdogEnabled()) {
+                        RecoveryController.cancel(context)
+                    }
                     context.packageManager.isComponentEnabled(componentName) == newValue
                 } else false
             }

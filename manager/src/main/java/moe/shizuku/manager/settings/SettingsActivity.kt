@@ -7,6 +7,11 @@ import moe.shizuku.manager.app.AppBarFragmentActivity
 
 class SettingsActivity : AppBarFragmentActivity() {
 
+    override fun onResume() {
+        super.onResume()
+        TaskVisibility.apply(this)
+    }
+
     override fun onApplyUserThemeResource(theme: Resources.Theme, isDecorView: Boolean) {
         super.onApplyUserThemeResource(theme, isDecorView)
         theme.applyStyle(R.style.ThemeOverlay_Rikka_Material3_Preference, true)

@@ -171,11 +171,10 @@ class AdbPairingService : Service() {
 
         if (success) {
             Log.i(tag, "Pair succeed")
-
-            title = getString(R.string.notification_adb_pairing_succeed_title)
-            text = getString(R.string.notification_adb_pairing_succeed_text)
-
             stopSearch()
+            getSystemService(NotificationManager::class.java).cancel(notificationId)
+            stopSelf()
+            return
         } else {
             title = getString(R.string.notification_adb_pairing_failed_title)
 
@@ -208,6 +207,10 @@ class AdbPairingService : Service() {
                 .setSmallIcon(R.drawable.ic_system_icon)
                 .setContentTitle(title)
                 .setContentText(text)
+                .setAutoCancel(true)
+                .setContentIntent(PendingIntent.getActivity(this, 0,
+                    Intent(this, moe.shizuku.manager.MainActivity::class.java),
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
                 /*.apply {
                     if (!success) {
                         addAction(retryNotificationAction)

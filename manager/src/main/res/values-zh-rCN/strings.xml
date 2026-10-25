@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_hide_task">隐藏任务</string>
+    <string name="settings_hide_task_summary">隐藏最近任务中的 Shizuku 卡片，可通过桌面图标重新打开。不改变服务运行状态。</string>
+    <string name="settings_hide_task_failed">无法更改最近任务显示状态。</string>
     <string name="permission_label">使用 Shizuku</string>
     <string name="permission_description">允许应用使用 Shizuku。</string>
     <string name="home_status_service_is_running">%1$s 正在运行</string>
